@@ -1,4 +1,4 @@
-﻿Ce plugin permet de retourner les évènements de votre agenda Google, il suffit pour cela de créer un équipement et de lui ajouter autant de "commandes" que vous avez d'agenda à traiter. Même s’il y beaucoups de paramètres, la configuration du plugin est simple : les paramètres par défaut peuvent être conservés, ce qui facilite la création. +
+﻿Ce plugin permet de retourner les évènements de votre agenda Google, il suffit pour cela de créer un équipement et de lui ajouter autant de "commandes" que vous avez d'agenda à traiter. Même s’il y a beaucoup de paramètres, la configuration du plugin est simple : les paramètres par défaut peuvent être conservés, ce qui facilite la création. +
 Vous pouvez l’utiliser pour l'affichage d'agenda tout simplement ou pour récupérer des agendas vous permettant de réaliser des actions dans votre installation Jeedom.
 
 
@@ -90,7 +90,7 @@ Au niveau d'un Calendrier :
 * Les évènements à venir sont représentés sans indicateur ; 
 * Les évènements identifiés "Scénario" présentent (seulement si l'option "autoriser les scénarios" est activée : 
 ** Le nom du scénario, tel que défini dans Jeedom ; 
-** Le texte d'information, tel que défini dans la synthaxe de l'évènement (2nd champ); 
+** Le texte d'information, tel que défini dans la syntaxe de l'évènement (2nd champ); 
 ** Une icône "roues crantées" indique que l'évènement est un scénario ; 
 *** en cliquant dessus, il est possible d'ouvrir la page de paramétrage du scénario ; 
 ** En passant la souris sur le titre : montre les valeurs de la variable définie pour la 1ère et/ou dernière minute.
