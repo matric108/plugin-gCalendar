@@ -3,12 +3,9 @@
     <id>gCalendar</id>
     <name>Google Agenda</name>
     <description>Plugin pour lire les evenements de google Agenda</description>
-    <icon>fa fa-calendar</icon>
     <licence>AGPL</licence>
-    <author>Loïc Gevrey</author>
-    <installation>Aucune</installation>
+    <author>Loïc</author>
     <require>1.156</require>
-    <version>2.0</version>
     <category>organization</category>
 </info>
 
