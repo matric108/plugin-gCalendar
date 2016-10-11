@@ -29,6 +29,18 @@ use Psr\Http\Message\ResponseInterface;
 class gCalendar extends eqLogic {
 	/*     * *************************Attributs****************************** */
 
+	public static function pull($_option) {
+		$gCalendar = self::byId($_option['gCalendar_id']);
+		if (!is_object($gCalendar)) {
+			return;
+		}
+		$event = $gCalendar->getCache('event', null);
+		if ($event == null) {
+			return;
+		}
+		$gCalendar->checkAndUpdateCmd('event', $event['event']['summary']);
+	}
+
 	/*     * ***********************Methode static*************************** */
 
 	public function getProvider() {
@@ -36,7 +48,7 @@ class gCalendar extends eqLogic {
 			'clientId' => $this->getConfiguration('client_id'),
 			'clientSecret' => $this->getConfiguration('client_secret'),
 			'redirectUri' => network::getNetworkAccess('external') . '/plugins/gCalendar/core/php/callback.php?apikey=' . config::byKey('api') . '&eqLogic_id=' . $this->getId(),
-			'hostedDomain' => network::getNetworkAccess('external', 'proto:dns'),
+			'accessType' => 'offline',
 		]);
 	}
 
@@ -72,7 +84,107 @@ class gCalendar extends eqLogic {
 
 	public function listCalendar() {
 		$result = $this->request('GET', '/users/me/calendarList');
-		return $result['items'];
+		return (isset($result['items'])) ? $result['items'] : array();
+	}
+
+	public function getEvents($_calendarId) {
+		$result = $this->request('GET', '/calendars/' . $_calendarId . '/events?timeMin=' . urlencode(date(DATE_RFC3339)) . '&timeMax=' . urlencode(date(DATE_RFC3339, strtotime('+1 week'))));
+
+		return (isset($result['items'])) ? $result['items'] : array();
+	}
+
+	public function syncWithGoogle() {
+		$events = array();
+		foreach ($this->getConfiguration('calendars') as $calendarId => $value) {
+			if ($value == 0) {
+				continue;
+			}
+			try {
+				foreach ($this->getEvents($calendarId) as $event) {
+					$events[] = array(
+						'summary' => $event['summary'],
+						'start' => (isset($event['start']['date'])) ? $event['start']['date'] : date('Y-m-d H:i:s', strtotime($event['start']['dateTime'])),
+						'end' => (isset($event['end']['date'])) ? $event['end']['date'] : date('Y-m-d H:i:s', strtotime($event['end']['dateTime'])),
+					);
+				}
+			} catch (Exception $e) {
+				log::add('gCalendar', 'error', __('Erreur sur : ', __FILE__) . $calendarId . ' => ' . $e->getMessage());
+			}
+		}
+		if (count($events) > 0) {
+			$this->setCache('events', $events);
+		}
+	}
+
+	public function getNextOccurence() {
+		$return = array('datetime' => null, 'event' => null, 'mode' => null);
+		foreach ($this->getCache('events') as $event) {
+			if ($return['event'] == null) {
+				$return['event'] = $event;
+				if (strtotime($event['start']) > strtotime('now')) {
+					$return['mode'] = 'start';
+					$return['datetime'] = $event['start'];
+				} else if (strtotime($event['end']) > strtotime('now')) {
+					$return['mode'] = 'end';
+					$return['datetime'] = $event['end'];
+				}
+				continue;
+			}
+			if (strtotime($event['start']) > strtotime('now') && ($return['datetime'] == null || strtotime($event['start']) < strtotime($return['datetime']))) {
+				$return['mode'] = 'start';
+				$return['datetime'] = $event['start'];
+				$return['event'] = $event;
+			}
+			if (strtotime($event['end']) > strtotime('now') && ($return['datetime'] == null || strtotime($event['end']) < strtotime($return['datetime']))) {
+				$return['mode'] = 'end';
+				$return['datetime'] = $event['end'];
+				$return['event'] = $event;
+			}
+		}
+		return $return;
+	}
+
+	public function reschedule() {
+		$next = $this->getNextOccurence();
+		if ($next['datetime'] === null || $next['datetime'] === false) {
+			return;
+		}
+		log::add('gCalendar', 'debug', 'Reprogrammation à : ' . print_r($next['datetime'], true));
+		$cron = cron::byClassAndFunction('gCalendar', 'pull', array('gCalendar_id' => intval($this->getId())));
+		if ($next['datetime'] != null) {
+			if (!is_object($cron)) {
+				$cron = new cron();
+				$cron->setClass('gCalendar');
+				$cron->setFunction('pull');
+				$cron->setOption(array('gCalendar_id' => intval($this->getId())));
+				$cron->setLastRun(date('Y-m-d H:i:s'));
+			}
+			$next['datetime'] = strtotime($next['datetime']);
+			$cron->setSchedule(date('i', $next['datetime']) . ' ' . date('H', $next['datetime']) . ' ' . date('d', $next['datetime']) . ' ' . date('m', $next['datetime']) . ' * ' . date('Y', $next['datetime']));
+			$cron->save();
+			$this->setCache('event', $next);
+		} else {
+			if (is_object($cron)) {
+				$cron->remove();
+			}
+		}
+	}
+
+	public function preSave() {
+		$cmd = $this->getCmd(null, 'event');
+		if (!is_object($cmd)) {
+			$cmd = new gCalendarCmd();
+			$cmd->setLogicalId('event');
+			$cmd->setIsVisible(1);
+			$cmd->setOrder(4);
+			$cmd->setName(__('Evènement', __FILE__));
+			$cmd->setTemplate('dashboard', 'line');
+			$cmd->setTemplate('mobile', 'line');
+		}
+		$cmd->setType('info');
+		$cmd->setSubType('string');
+		$cmd->setEqLogic_id($this->getId());
+		$cmd->save();
 	}
 
 	/*     * *********************Methode d'instance************************* */
