@@ -40,9 +40,9 @@ class gCalendar extends eqLogic {
 		}
 		if ($event['mode'] == 'start') {
 			$gCalendar->checkAndUpdateCmd('event', $event['event']['summary']);
-			if ($gCalendar->getConfiguration('allowInteract') == 1 && substr(trim($event['event']['summary']), 0, 1) == '#') {
+			if ($gCalendar->getConfiguration('allowInteract') == 1) {
 				$param = array('emptyReply' => 1);
-				$response = interactQuery::tryToReply(trim(str_replace('#', '', trim($event['event']['summary']))), $param);
+				$response = interactQuery::tryToReply($event['event']['summary'], $param);
 				if ($response != '' && $gCalendar->getConfiguration('redirectJeedomResponse') != '') {
 					$cmd = cmd::byId(str_replace('#', '', $gCalendar->getConfiguration('redirectJeedomResponse')));
 					if (!is_object($cmd)) {
