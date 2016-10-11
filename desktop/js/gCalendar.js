@@ -16,11 +16,31 @@
  */
 
 
-$("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
-/*
- * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
- */
-function addCmdToTable(_cmd) {
+ $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+
+ $('#bt_linkToUser').on('click', function () {
+    $.ajax({
+        type: "POST", 
+        url: "plugins/gCalendar/core/ajax/gCalendar.ajax.php", 
+        data: {
+            action: "linkToUser",
+            id: $('.eqLogic .eqLogicAttr[data-l1key=id]').value()
+        },
+        dataType: 'json',
+        error: function (request, status, error) {
+            handleAjaxError(request, status, error);
+        },
+        success: function (data) {
+            if (data.state != 'ok') {
+                $('#div_alert').showAlert({message: data.result, level: 'danger'});
+                return;
+            }
+            window.location.href = data.result.redirect;
+        }
+    });
+});
+
+ function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
         var _cmd = {configuration: {}};
     }
@@ -50,4 +70,38 @@ function addCmdToTable(_cmd) {
         $('#table_cmd tbody tr:last .cmdAttr[data-l1key=type]').value(init(_cmd.type));
     }
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
+}
+
+function printEqLogic(_eqLogic) {
+    $('.span_googleCallbackId').empty().append(_eqLogic.id);
+    updateCalendarList(_eqLogic);
+}
+
+
+function updateCalendarList(_eqLogic){
+   $('#div_listCalendar').empty();
+   $.ajax({
+    type: "POST", 
+    url: "plugins/gCalendar/core/ajax/gCalendar.ajax.php", 
+    data: {
+        action: "listCalendar",
+        id: $('.eqLogic .eqLogicAttr[data-l1key=id]').value()
+    },
+    dataType: 'json',
+    error: function (request, status, error) {
+        handleAjaxError(request, status, error);
+    },
+    success: function (data) {
+        if (data.state != 'ok') {
+            $('#div_alert').showAlert({message: data.result, level: 'danger'});
+            return;
+        }
+        html = '';
+        for(var i in data.result){
+          html += '<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="calendars" data-l3key="'+data.result[i].id+'" />'+data.result[i].summary+'</label>'; 
+        }
+        $('#div_listCalendar').append(html);
+        $('#div_listCalendar').setValues(_eqLogic,'.eqLogicAttr');
+    }
+});
 }
