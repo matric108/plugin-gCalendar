@@ -38,17 +38,21 @@ class gCalendar extends eqLogic {
 		if ($event == null) {
 			return;
 		}
-		$gCalendar->checkAndUpdateCmd('event', $event['event']['summary']);
-		if ($gCalendar->getConfiguration('allowInteract') == 1) {
-			$param = array('emptyReply' => 1);
-			$response = interactQuery::tryToReply($event['event']['summary'], $param);
-			if ($response != '' && $gCalendar->getConfiguration('redirectJeedomResponse') != '') {
-				$cmd = cmd::byId(str_replace('#', '', $gCalendar->getConfiguration('redirectJeedomResponse')));
-				if (!is_object($cmd)) {
-					throw new Exception(__('Commande de réponse introuvable :', __FILE__) . ' ' . $gCalendar->getConfiguration('redirectJeedomResponse'));
+		if ($event['mode'] == 'start') {
+			$gCalendar->checkAndUpdateCmd('event', $event['event']['summary']);
+			if ($gCalendar->getConfiguration('allowInteract') == 1 && substr(trim($event['event']['summary']), 0, 1) == '#') {
+				$param = array('emptyReply' => 1);
+				$response = interactQuery::tryToReply($event['event']['summary'], $param);
+				if ($response != '' && $gCalendar->getConfiguration('redirectJeedomResponse') != '') {
+					$cmd = cmd::byId(str_replace('#', '', $gCalendar->getConfiguration('redirectJeedomResponse')));
+					if (!is_object($cmd)) {
+						throw new Exception(__('Commande de réponse introuvable :', __FILE__) . ' ' . $gCalendar->getConfiguration('redirectJeedomResponse'));
+					}
+					$cmd->execCmd(array('message' => $response));
 				}
-				$cmd->execCmd(array('message' => $response));
 			}
+		} else {
+			$gCalendar->checkAndUpdateCmd('event', '');
 		}
 		$gCalendar->syncWithGoogle();
 		$gCalendar->reschedule();
