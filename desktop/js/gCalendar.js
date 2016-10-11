@@ -79,8 +79,8 @@ function printEqLogic(_eqLogic) {
 
 
 function updateCalendarList(_eqLogic){
-   $('#div_listCalendar').empty();
-   $.ajax({
+ $('#div_listCalendar').empty();
+ $.ajax({
     type: "POST", 
     url: "plugins/gCalendar/core/ajax/gCalendar.ajax.php", 
     data: {
@@ -99,9 +99,15 @@ function updateCalendarList(_eqLogic){
         html = '';
         for(var i in data.result){
           html += '<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="calendars" data-l3key="'+data.result[i].id+'" />'+data.result[i].summary+'</label>'; 
-        }
-        $('#div_listCalendar').append(html);
-        $('#div_listCalendar').setValues(_eqLogic,'.eqLogicAttr');
-    }
+      }
+      $('#div_listCalendar').append(html);
+      $('#div_listCalendar').setValues(_eqLogic,'.eqLogicAttr');
+  }
 });
 }
+
+$("#bt_selectRedirectJeedomResponse").on('click', function () {
+    jeedom.cmd.getSelectModal({cmd: {type: 'action', subType: 'message'}}, function (result) {
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=redirectJeedomResponse]').value(result.human);
+    });
+});

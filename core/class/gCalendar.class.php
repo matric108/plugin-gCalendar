@@ -39,6 +39,29 @@ class gCalendar extends eqLogic {
 			return;
 		}
 		$gCalendar->checkAndUpdateCmd('event', $event['event']['summary']);
+		if ($gCalendar->getConfiguration('allowInteract') == 1) {
+			$response = interactQuery::tryToReply($event['event']['summary']);
+			if ($response != '' && $gCalendar->getConfiguration('redirectJeedomResponse') != '') {
+				$cmd = cmd::byId(str_replace('#', '', $gCalendar->getConfiguration('redirectJeedomResponse')));
+				if (!is_object($cmd)) {
+					throw new Exception(__('Commande de réponse introuvable :', __FILE__) . ' ' . $gCalendar->getConfiguration('redirectJeedomResponse'));
+				}
+				$cmd->execCmd(array('message' => $response));
+			}
+		}
+		$gCalendar->syncWithGoogle();
+		$gCalendar->reschedule();
+	}
+
+	public static function cron30() {
+		foreach (self::byType('gCalendar') as $eqLogic) {
+			try {
+				$eqLogic->syncWithGoogle();
+				$eqLogic->reschedule();
+			} catch (Exception $e) {
+				log::add('gCalendar', 'error', __('Erreur sur : ', __FILE__) . $eqLogic->getHumanName() . ' => ' . $e->getMessage());
+			}
+		}
 	}
 
 	/*     * ***********************Methode static*************************** */

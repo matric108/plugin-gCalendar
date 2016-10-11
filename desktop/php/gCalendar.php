@@ -114,7 +114,7 @@ foreach (object::all() as $object) {
           </div>
         </div>
         <div class="form-group">
-        <label class="col-lg-3 control-label">{{Lier}}</label>
+          <label class="col-lg-3 control-label">{{Lier}}</label>
           <div class="col-lg-2">
             <a class="btn btn-default" id="bt_linkToUser"><i class='fa fa-refresh'></i> {{Lier à un utilisateur}}</a>
           </div>
@@ -124,21 +124,38 @@ foreach (object::all() as $object) {
           <div class="col-sm-9" id="div_listCalendar">
           </div>
         </div>
-      </fieldset>
-    </form>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="commandtab">
-    <a class="btn btn-success btn-sm cmdAction pull-right" data-action="add"><i class="fa fa-plus-circle"></i> {{Commandes}}</a><br/><br/>
-    <table id="table_cmd" class="table table-bordered table-condensed">
-      <thead>
-        <tr>
-          <th>{{Nom}}</th><th>{{Type}}</th><th>{{Action}}</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-  </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">{{Autoriser les interactions}}</label>
+          <div class="col-lg-2">
+            <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="allowInteract"/></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">{{Rediriger les reponses de Jeedom sur}}</label>
+          <div class="col-sm-3">
+           <div class="input-group">
+            <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="redirectJeedomResponse" />
+            <span class="input-group-btn">
+             <a class="btn btn-default" id="bt_selectRedirectJeedomResponse"><i class="fa fa-list-alt"></i></a>
+           </span>
+         </div>
+       </div>
+     </div>
+   </fieldset>
+ </form>
+</div>
+<div role="tabpanel" class="tab-pane" id="commandtab">
+  <a class="btn btn-success btn-sm cmdAction pull-right" data-action="add"><i class="fa fa-plus-circle"></i> {{Commandes}}</a><br/><br/>
+  <table id="table_cmd" class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>{{Nom}}</th><th>{{Type}}</th><th>{{Action}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
 </div>
 
 </div>
