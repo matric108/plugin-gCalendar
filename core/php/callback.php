@@ -27,6 +27,7 @@ try {
 		'code' => $_GET['code'],
 	]);
 	$eqLogic->setConfiguration('accessToken', $accessToken->jsonSerialize());
+	$eqLogic->setConfiguration('refreshToken', $accessToken->getRefreshToken());
 	$eqLogic->save();
 
 	redirect(network::getNetworkAccess('external') . '/index.php?v=d&p=gCalendar&m=gCalendar&id=' . $eqLogic->getId());

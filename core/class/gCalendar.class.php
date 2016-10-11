@@ -85,7 +85,7 @@ class gCalendar extends eqLogic {
 		$existingAccessToken = new AccessToken($this->getConfiguration('accessToken'));
 		if ($existingAccessToken->hasExpired()) {
 			$newAccessToken = $provider->getAccessToken('refresh_token', [
-				'refresh_token' => $existingAccessToken->getRefreshToken(),
+				'refresh_token' => $this->getConfiguration('refreshToken'),
 			]);
 			$this->setConfiguration('accessToken', $newAccessToken->jsonSerialize());
 			$this->save();
@@ -97,7 +97,7 @@ class gCalendar extends eqLogic {
 	public function linkToUser() {
 		@session_start();
 		$provider = $this->getProvider();
-		$authorizationUrl = $provider->getAuthorizationUrl();
+		$authorizationUrl = $provider->getAuthorizationUrl(['approval_prompt' => 'force']);
 		$_SESSION['oauth2state'] = $provider->getState();
 		return $authorizationUrl;
 	}
