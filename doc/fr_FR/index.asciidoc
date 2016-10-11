@@ -1,14 +1,8 @@
-:icons:
 == Google Agenda
 
 === Description
 Le plugin agenda permet de récupérer les événements de son Google Agenda. +
 Il gère les multiples évènements en les séparant par un tiret (sous la forme: " - ") ou un double pipe (sous la forme: "||") ; les données utiles sont, elles, séparées par des points-virgules (";"). +
-
-L’utilisateur dispose de 2 modes de fonctionnement :
-
-	* tester la présence de l’évènement et l’état de celui-ci via une condition dans un scénario (utilisation de l’opérateur ~ pour savoir si une chaîne de caractères en contient une autre).
-	* définir un événement "scénario" et celui-ci sera automatiquement lancé par jeedom, avec 2 actions possibiles : 1 pour le début et 1 pour la fin de l’événement.
 
 '''
 === Configuration
@@ -17,7 +11,3 @@ include::configuration.asciidoc[]
 '''
 === FAQ
 include::faq.asciidoc[]
-
-'''
-=== Troubleshoting
-include::troubleshoting.asciidoc[]

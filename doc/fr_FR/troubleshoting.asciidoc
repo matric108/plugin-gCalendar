@@ -1,6 +1,0 @@
-[panel,danger]
-.Mes scénarios réagissent à des évènements passées ou futurs (mode prochaine heure ou journée)
---
-Dans l'analyse de la trame, il faut vérifier que vous êtes sur un évènement actif; en vérifiant que [yellow-background]#;A;# est présent. _(exemple : "..."~";A;mon event")_.
-Voir la documentation pour plus d'explications.
---

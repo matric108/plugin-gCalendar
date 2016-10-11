@@ -1,0 +1,9 @@
+{
+	"id" : "gCalendar",
+	"name" : "Google agenda",
+	"description" : "Plugin pour Google Agenda",
+	"licence" : "AGPL",
+	"author" : "Loïc",
+	"require" : "2.4",
+	"category" : "organization"
+}
