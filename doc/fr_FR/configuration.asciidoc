@@ -21,6 +21,6 @@ Le plugin ne comporte que une commande qui vous donne le titre de l'évenement e
 
 == Interaction
 
-Jeedom peut interpreter le titre d'un évènement comme une interaction et donc déclencher une action. Pour cela il vous faut activer les intéractions sur la page de configuration de l'équipement et faire commencer le titre de l'évènement par #.
+Jeedom peut interpreter le titre d'un évènement comme une interaction et donc déclencher une action. Pour cela il vous faut activer les intéractions sur la page de configuration de l'équipement.
 
 Vous pouvez aussi indiquer une commande de retour par laquel jeedom va répondre suite à l'éxecution de l'interaction.
