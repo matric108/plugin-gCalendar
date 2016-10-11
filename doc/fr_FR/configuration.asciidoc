@@ -1,1 +1,26 @@
 ﻿
+== Creer un équipement Google Agenda
+
+Coté Jeedom il vous faut creer un équipement Google Agenda et ainsi avoir l'URL de redirection
+
+== Creer un compte developpeur chez Google 
+
+Il vous faut creer un compte developpeur chez google pour avoir accès aux API, allez https://console.developers.google.com/apis/credentials[ici] puis faites "Creer identifiants" et "ID clinet Oauth", selectionnez "Application Web" et dans "URI de redirection autorisés" mettez celle donnée sur la page de configuration de l'équipement jeedom.
+
+Récuperez la clef client et le secret client (il vous faudra les mettres coté Jeedom dans l'équipement)
+
+Il vous faut ensuite ajouter l'API Google Calendar en allant https://console.developers.google.com/apis/dashboard[ici], puis en faisant "Activer l'api" et recherchez "Google Calendar API" puis ajoutez la.
+
+== Liée le compte Google à jeedom
+
+Copiez la clef client et le secrey client coté Jeedom puis cliquez sur le bouton Lier, validez tout
+
+== Commande
+
+Le plugin ne comporte que une commande qui vous donne le titre de l'évenement en cours
+
+== Interaction
+
+Jeedom peut interpreter le titre d'un évènement comme une interaction et donc déclencher une action. Pour cela il vous faut activer les intéractions sur la page de configuration de l'équipement et faire commencer le titre de l'évènement par #.
+
+Vous pouvez aussi indiquer une commande de retour par laquel jeedom va répondre suite à l'éxecution de l'interaction.

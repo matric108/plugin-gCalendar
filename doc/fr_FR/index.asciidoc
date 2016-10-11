@@ -1,13 +1,16 @@
-== Google Agenda
+= Google Agenda
 
-=== Description
-Le plugin agenda permet de récupérer les événements de son Google Agenda. +
-Il gère les multiples évènements en les séparant par un tiret (sous la forme: " - ") ou un double pipe (sous la forme: "||") ; les données utiles sont, elles, séparées par des points-virgules (";"). +
+== Description
+Le plugin agenda permet de récupérer les événements de son Google Agenda. Il peut aussi lancer une interaction lors d'un évènement
 
 '''
-=== Configuration
+== Configuration
 include::configuration.asciidoc[]
 
 '''
-=== FAQ
+== FAQ
 include::faq.asciidoc[]
+
+== Changelog
+'''
+include::changelog.asciidoc[]

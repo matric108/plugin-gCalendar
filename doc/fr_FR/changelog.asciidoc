@@ -1,0 +1,3 @@
+- Passage sur la nouvelle API fitbit
+- Utilisation d'un widget standard
+- Ajout de l'information sur le rythme cardiaque
