@@ -198,13 +198,12 @@ class gCalendar extends eqLogic {
 		}
 	}
 
-	public function preSave() {
+	public function postSave() {
 		$cmd = $this->getCmd(null, 'event');
 		if (!is_object($cmd)) {
 			$cmd = new gCalendarCmd();
 			$cmd->setLogicalId('event');
 			$cmd->setIsVisible(1);
-			$cmd->setOrder(4);
 			$cmd->setName(__('Evènement', __FILE__));
 			$cmd->setTemplate('dashboard', 'line');
 			$cmd->setTemplate('mobile', 'line');
