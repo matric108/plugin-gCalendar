@@ -111,6 +111,9 @@ class gCalendar extends eqLogic {
 	}
 
 	public function listCalendar() {
+		if ($this->getConfiguration('accessToken') == '') {
+			return array();
+		}
 		$result = $this->request('GET', '/users/me/calendarList');
 		return (isset($result['items'])) ? $result['items'] : array();
 	}
