@@ -75,7 +75,7 @@ class gCalendar extends eqLogic {
 		return new googleProvider([
 			'clientId' => $this->getConfiguration('client_id'),
 			'clientSecret' => $this->getConfiguration('client_secret'),
-			'redirectUri' => network::getNetworkAccess('external') . '/plugins/gCalendar/core/php/callback.php?apikey=' . config::byKey('api') . '&eqLogic_id=' . $this->getId(),
+			'redirectUri' => network::getNetworkAccess('external') . '/plugins/gCalendar/core/php/callback.php?apikey=' . jeedom::getApiKey('gCalendar') . '&eqLogic_id=' . $this->getId(),
 			'accessType' => 'offline',
 		]);
 	}

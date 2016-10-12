@@ -98,7 +98,7 @@ foreach (object::all() as $object) {
         <div class="form-group">
           <label class="col-lg-3 control-label">{{URL de retour}}</label>
           <div class="col-lg-9">
-            <span><?php echo network::getNetworkAccess('external') . '/plugins/gCalendar/core/php/callback.php?apikey=' . config::byKey('api') . '&eqLogic_id='; ?><span class="span_googleCallbackId"></span></span>
+            <span><?php echo network::getNetworkAccess('external') . '/plugins/gCalendar/core/php/callback.php?apikey=' . jeedom::getApiKey('gCalendar') . '&eqLogic_id='; ?><span class="span_googleCallbackId"></span></span>
           </div>
         </div>
         <div class="form-group">
