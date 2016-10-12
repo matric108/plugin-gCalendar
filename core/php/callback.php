@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
 include_file('core', 'authentification', 'php');
-if (!jeedom::apiAccess(init('apikey'))) {
+if (!jeedom::apiAccess(init('apikey'), 'gCalendar')) {
 	echo 'Clef API non valide, vous n\'êtes pas autorisé à effectuer cette action';
 	die();
 }
