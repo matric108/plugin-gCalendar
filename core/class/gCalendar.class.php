@@ -64,7 +64,7 @@ class gCalendar extends eqLogic {
 				$eqLogic->syncWithGoogle();
 				$eqLogic->reschedule();
 			} catch (Exception $e) {
-				log::add('gCalendar', 'error', __('Erreur sur : ', __FILE__) . $eqLogic->getHumanName() . ' => ' . $e->getMessage());
+				log::add('gCalendar', 'warning', __('Erreur sur : ', __FILE__) . $eqLogic->getHumanName() . ' => ' . $e->getMessage());
 			}
 		}
 	}
