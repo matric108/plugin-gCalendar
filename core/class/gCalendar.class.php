@@ -126,6 +126,9 @@ class gCalendar extends eqLogic {
 
 	public function syncWithGoogle() {
 		$events = array();
+		if (!is_array($this->getCache('calendars')) || count($this->getCache('calendars')) == 0) {
+			return;
+		}
 		foreach ($this->getConfiguration('calendars') as $calendarId => $value) {
 			if ($value == 0) {
 				continue;
@@ -149,6 +152,9 @@ class gCalendar extends eqLogic {
 
 	public function getNextOccurence() {
 		$return = array('datetime' => null, 'event' => null, 'mode' => null);
+		if (!is_array($this->getCache('events')) || count($this->getCache('events')) == 0) {
+			return $return;
+		}
 		foreach ($this->getCache('events') as $event) {
 			if ($return['event'] == null) {
 				$return['event'] = $event;
