@@ -120,13 +120,12 @@ class gCalendar extends eqLogic {
 
 	public function getEvents($_calendarId) {
 		$result = $this->request('GET', '/calendars/' . $_calendarId . '/events?timeMin=' . urlencode(date(DATE_RFC3339)) . '&timeMax=' . urlencode(date(DATE_RFC3339, strtotime('+1 week'))));
-
 		return (isset($result['items'])) ? $result['items'] : array();
 	}
 
 	public function syncWithGoogle() {
 		$events = array();
-		if (!is_array($this->getCache('calendars')) || count($this->getCache('calendars')) == 0) {
+		if (!is_array($this->getConfiguration('calendars')) || count($this->getConfiguration('calendars')) == 0) {
 			return;
 		}
 		foreach ($this->getConfiguration('calendars') as $calendarId => $value) {
@@ -147,6 +146,10 @@ class gCalendar extends eqLogic {
 		}
 		if (count($events) > 0) {
 			$this->setCache('events', $events);
+		}
+		$cmd = $this->getCmd(null, 'lastsync');
+		if (is_object($cmd)) {
+			$cmd->event(date('Y-m-d H:i:s'));
 		}
 	}
 
@@ -221,6 +224,32 @@ class gCalendar extends eqLogic {
 		$cmd->setSubType('string');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->save();
+
+		$cmd = $this->getCmd(null, 'lastsync');
+		if (!is_object($cmd)) {
+			$cmd = new gCalendarCmd();
+			$cmd->setLogicalId('lastsync');
+			$cmd->setIsVisible(1);
+			$cmd->setName(__('Date synchronisation', __FILE__));
+			$cmd->setTemplate('dashboard', 'line');
+			$cmd->setTemplate('mobile', 'line');
+		}
+		$cmd->setType('info');
+		$cmd->setSubType('string');
+		$cmd->setEqLogic_id($this->getId());
+		$cmd->save();
+
+		$cmd = $this->getCmd(null, 'refresh');
+		if (!is_object($cmd)) {
+			$cmd = new gCalendarCmd();
+			$cmd->setLogicalId('refresh');
+			$cmd->setIsVisible(1);
+			$cmd->setName(__('Rafraîchir', __FILE__));
+		}
+		$cmd->setType('action');
+		$cmd->setSubType('other');
+		$cmd->setEqLogic_id($this->getId());
+		$cmd->save();
 	}
 
 	/*     * *********************Methode d'instance************************* */
@@ -234,7 +263,11 @@ class gCalendarCmd extends cmd {
 	/*     * *********************Methode d'instance************************* */
 
 	public function execute($_options = array()) {
-
+		if ($this->getLogicalId() == 'refresh') {
+			$eqLogic = $this->getEqLogic();
+			$eqLogic->syncWithGoogle();
+			$eqLogic->reschedule();
+		}
 	}
 
 	/*     * **********************Getteur Setteur*************************** */
