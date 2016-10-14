@@ -80,10 +80,10 @@ class gCalendar extends eqLogic {
 		]);
 	}
 
-	public function getAccessToken() {
+	public function getAccessToken($_forceRefresh = false) {
 		$provider = $this->getProvider();
 		$existingAccessToken = new AccessToken($this->getConfiguration('accessToken'));
-		if ($existingAccessToken->hasExpired()) {
+		if ($existingAccessToken->hasExpired() || $_forceRefresh) {
 			$newAccessToken = $provider->getAccessToken('refresh_token', [
 				'refresh_token' => $this->getConfiguration('refreshToken'),
 			]);
@@ -106,7 +106,13 @@ class gCalendar extends eqLogic {
 		$options = array();
 		$options = array_merge_recursive($options, $_options);
 		$provider = $this->getProvider();
-		$request = $provider->getAuthenticatedRequest($_type, 'https://www.googleapis.com/calendar/v3/' . trim($_request, '/'), $this->getAccessToken(), $options);
+		try {
+			$request = $provider->getAuthenticatedRequest($_type, 'https://www.googleapis.com/calendar/v3/' . trim($_request, '/'), $this->getAccessToken(), $options);
+			return $provider->getResponse($request);
+		} catch (Exception $e) {
+
+		}
+		$request = $provider->getAuthenticatedRequest($_type, 'https://www.googleapis.com/calendar/v3/' . trim($_request, '/'), $this->getAccessToken(true), $options);
 		return $provider->getResponse($request);
 	}
 
