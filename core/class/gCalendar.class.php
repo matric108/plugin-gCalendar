@@ -4,7 +4,7 @@
  *
  * Jeedom is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, eiher version 3 of the License, or
  * (at your option) any later version.
  *
  * Jeedom is distributed in the hope that it will be useful,
@@ -41,7 +41,7 @@ class gCalendar extends eqLogic {
 		if ($event['mode'] == 'start') {
 			$gCalendar->checkAndUpdateCmd('event', $event['event']['summary']);
 			if ($gCalendar->getConfiguration('allowInteract') == 1) {
-				$param = array('emptyReply' => 1);
+				$param = array('emptyReply' => 1,'plugin' => 'gCalendar');
 				$response = interactQuery::tryToReply($event['event']['summary'], $param);
 				if ($response != '' && $gCalendar->getConfiguration('redirectJeedomResponse') != '') {
 					$cmd = cmd::byId(str_replace('#', '', $gCalendar->getConfiguration('redirectJeedomResponse')));
