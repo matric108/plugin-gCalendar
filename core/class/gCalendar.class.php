@@ -43,12 +43,12 @@ class gCalendar extends eqLogic {
 			if ($gCalendar->getConfiguration('allowInteract') == 1) {
 				$param = array('emptyReply' => 1,'plugin' => 'gCalendar');
 				$response = interactQuery::tryToReply($event['event']['summary'], $param);
-				if ($response != '' && $gCalendar->getConfiguration('redirectJeedomResponse') != '') {
+				if ($response['reply'] != '' && $gCalendar->getConfiguration('redirectJeedomResponse') != '') {
 					$cmd = cmd::byId(str_replace('#', '', $gCalendar->getConfiguration('redirectJeedomResponse')));
 					if (!is_object($cmd)) {
 						throw new Exception(__('Commande de réponse introuvable :', __FILE__) . ' ' . $gCalendar->getConfiguration('redirectJeedomResponse'));
 					}
-					$cmd->execCmd(array('message' => $response));
+					$cmd->execCmd(array('message' => $response['reply']));
 				}
 			}
 		} else {
