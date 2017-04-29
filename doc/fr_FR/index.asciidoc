@@ -1,7 +1,7 @@
 = Google Agenda
 
 == Description
-Le plugin agenda permet de récupérer les événements de son Google Agenda. Il peut aussi lancer une interaction lors d'un évènement
+Le plugin Agenda permet de récupérer les événements de son Google Agenda. Il peut aussi lancer une interaction lors d'un événement
 
 '''
 == Configuration
