@@ -1,26 +1,26 @@
 ﻿
-== Creer un équipement Google Agenda
+== Créer un équipement Google Agenda
 
-Coté Jeedom il vous faut creer un équipement Google Agenda et ainsi avoir l'URL de redirection
+Côté Jeedom il faut créer un équipement Google Agenda et ainsi obtenir l'URL de redirection
 
-== Creer un compte developpeur chez Google 
+== Créer un compte développeur chez Google 
 
-Il vous faut creer un compte developpeur chez google pour avoir accès aux API, allez https://console.developers.google.com/apis/credentials[ici] puis faites "Creer identifiants" et "ID clinet Oauth", selectionnez "Application Web" et dans "URI de redirection autorisés" mettez celle donnée sur la page de configuration de l'équipement jeedom.
+Il faut créer un compte développeur chez Google pour avoir accès aux API, allez sur https://console.developers.google.com/apis/credentials[ici] puis faîtes "Créer identifiants" et "ID clinet Oauth", sélectionnez "Application Web" et dans "URL de redirection autorisée" mettez celle donnée sur la page de configuration de l'équipement Jeedom.
 
-Récuperez la clef client et le secret client (il vous faudra les mettres coté Jeedom dans l'équipement)
+Récupérez la clef client et le secret client (il faudra les mettre côté Jeedom dans l'équipement)
 
-Il vous faut ensuite ajouter l'API Google Calendar en allant https://console.developers.google.com/apis/dashboard[ici], puis en faisant "Activer l'api" et recherchez "Google Calendar API" puis ajoutez la.
+Il faut ensuite ajouter l'API Google Calendar en allant sur https://console.developers.google.com/apis/dashboard[ici], puis en faisant "Activer l'api" et recherchez "Google Calendar API" puis ajoutez-la.
 
-== Liée le compte Google à jeedom
+== Liez le compte Google à Jeedom
 
-Copiez la clef client et le secrey client coté Jeedom puis cliquez sur le bouton Lier, validez tout
+Copiez la clef client et le secrey client côté Jeedom puis cliquez sur le bouton Lier, validez
 
 == Commande
 
-Le plugin ne comporte que une commande qui vous donne le titre de l'évenement en cours
+Le plugin ne comporte qu'une commande qui vous donne le titre de l'événement en cours
 
 == Interaction
 
-Jeedom peut interpreter le titre d'un évènement comme une interaction et donc déclencher une action. Pour cela il vous faut activer les intéractions sur la page de configuration de l'équipement.
+Jeedom peut interpréter le titre d'un événement comme une interaction et donc déclencher une action. Pour cela il faut activer les interactions sur la page de configuration de l'équipement.
 
-Vous pouvez aussi indiquer une commande de retour par laquel jeedom va répondre suite à l'éxecution de l'interaction.
+Vous pouvez aussi indiquer une commande de retour par laquelle Jeedom va répondre suite à l'exécution de l'interaction.
